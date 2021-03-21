@@ -64,7 +64,7 @@ Above plots are the diagonistic plots for the model. In the first plot, all of t
 
 ## Limitation
 
-When we are exploring the models, there are actually several interactions that can improve the performance of the model. There are two primary reasons we did not include those interactions. First, the interpretability of model will decrease. For example, the interaction between the Bulk and Primary_reason. It is hard for us to explain how that relate to the price of the drug. Second, those interactions may lead the model to a overfitting problem.
+When we are exploring the models, there are actually several interactions that can improve the performance of the model. There are two primary reasons we did not include those interactions. First, the interpretability of model will decrease. For example, the interaction between the Bulk and Primary_reason. It is hard for us to explain how that relate to the price of the drug. Second, those interactions may potentially lead the model to overfitting.
 
 
 
