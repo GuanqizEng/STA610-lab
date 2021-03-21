@@ -35,7 +35,6 @@ data = streetrx.m.comp.pppm
 model =  lmer(log(ppm) ~ (1|state) + mgstr + as.factor(Bulk), REML=FALSE, data)
 ```
 
-
 ```{r, warning=FALSE, echo=FALSE}
 kable(fixef(model), caption = "Fixed Effect")
 ```
@@ -49,7 +48,7 @@ Our model only includes three variables: State, mgstr, and Bulk. Mgstr and Bulk 
 
 Let's first check the fixed effect in this model. As we can see form the fixed effect table, the intercept for this model is -0.59, which means the price of the drug would be $e^{-0.59} = 0.554$ while the dosage strength is 0 and Bulk is also 0. For mgstr, its coefficent is -0.01, which means a 1 unit increase in dosage strength will lead to a 0.01 decrease in log price per mg while holding all other coefficients constant. That is to say, a 1 unit increase in mgstr will lead to original price increase by a factor of $e^{-0.01} = 0.99$ times. For Bulk, if we switch the category of bulk from 0 to 1 while holding all other coefficients constant, then the intercept of the log price will decrease 0.103, which means the original price per gram will incrase by a factor of $e^{-0.103} = 0.902$ times.
 
-For random effect, as we can see from the graph, there is certain degree random effect in the model although their contribution is small. For states like Tennessee, Virginia, and Oklahama, the price of Morphin would be higher. However, for states like Arizona, California, and Neveda, the price of Morphine would be lower. 
+For random effect of the state, it means in different states, the base price of Morphine will be a little bit different. The across-state variation is 0.015 and the within-state variation is 0.82, which means the across-state random effct is not strong compared to within state variation. As we can see from the graph, there is certain degree random effect in the model although their contribution is small. For states like Tennessee, Virginia, and Oklahama, the price of Morphin would be higher. However, for states like Arizona, California, and Neveda, the price of Morphine would be lower. 
 
 
 ```{r, fig.width=3, fig.height=3, warning=FALSE, echo=FALSE}  
@@ -65,6 +64,4 @@ Above plots are the diagonistic plots for the model. In the first plot, all of t
 ## Limitation
 
 When we are exploring the models, there are actually several interactions that can improve the performance of the model. There are two primary reasons we did not include those interactions. First, the interpretability of model will decrease. For example, the interaction between the Bulk and Primary_reason. It is hard for us to explain how that relate to the price of the drug. Second, those interactions may potentially lead the model to overfitting.
-
-
 
