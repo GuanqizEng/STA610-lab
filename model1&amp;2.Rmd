@@ -25,13 +25,11 @@ library(influence.ME)
 load("models_only.RData")
 ```
 
-## Model design
-
+## Conclusion
 ```{r, warning=FALSE, echo=FALSE}
 data = streetrx.m.comp.pppm
 ```
 
-Conclusion
 
 ```{r, warning=FALSE, echo=FALSE}
 model =  lmer(log(ppm) ~ (1|state) + mgstr + as.factor(Bulk), REML=FALSE, data)
@@ -49,9 +47,9 @@ sjPlot::plot_model(model, type="re")
 
 Our model only includes three variables: State, mgstr, and Bulk. Mgstr and Bulk are fixed effects and State has a random effect.
 
-Lets first check the fixed effect in this model. As we can see form the fixed effect table, the intercept for this model is -0.59, which means the price of the drug would be $e^{-0.59} = 0.554$ while the dosage strength is 0 and Bulk is also 0. For mgstr, its coefficent is -0.01, which means a 1 unit increase in dosage strength will lead to a 0.01 decrease in log price per mg while holding all other coefficients constant. That is to say, a 1 unit increase in mgstr will lead to original price increase by $e^{-0.01} = 0.99$. For Bulk, if we switch the category of bulk from 0 to 1 while holding all other coefficients constant, then the intercept of the log price will decrease 0.103, which means the original price per gram will incrase by $e^{-0.103} = 0.902$ while holding all other coefficents constant.
+Let's first check the fixed effect in this model. As we can see form the fixed effect table, the intercept for this model is -0.59, which means the price of the drug would be $e^{-0.59} = 0.554$ while the dosage strength is 0 and Bulk is also 0. For mgstr, its coefficent is -0.01, which means a 1 unit increase in dosage strength will lead to a 0.01 decrease in log price per mg while holding all other coefficients constant. That is to say, a 1 unit increase in mgstr will lead to original price increase by a factor of $e^{-0.01} = 0.99$ times. For Bulk, if we switch the category of bulk from 0 to 1 while holding all other coefficients constant, then the intercept of the log price will decrease 0.103, which means the original price per gram will incrase by a factor of $e^{-0.103} = 0.902$ times.
 
-For random effect, as we can see from the graph, there is certain degree random effect in the model although their contribution is small compared to within group variance. For states like Tennessee, Virginia, and Oklahama, the log price would be higher. However, for states like Arizona, California, and Neveda, the log price would be lower. 
+For random effect, as we can see from the graph, there is certain degree random effect in the model although their contribution is small. For states like Tennessee, Virginia, and Oklahama, the price of Morphin would be higher. However, for states like Arizona, California, and Neveda, the price of Morphine would be lower. 
 
 
 ```{r, fig.width=3, fig.height=3, warning=FALSE, echo=FALSE}  
@@ -62,7 +60,11 @@ plot(model, rstudent(.) ~ hatvalues(.), main = "Residuals")
 ```
 
 
-Above plots are the diagonistic plots for the model. In the first plot, all of the points are nearly randomly distributed around the 0 line except a small pattern. However, that pattern is acceptable. The QQ plot shows the target variable is deviated fromm the normal distribution. That deviation is expected because the distribution of the $log(price)$ is not that normally distributed as shown above. For the scale-location plot, there is not an obvious pattern in the graph, which means the variance of the residual is constant across all level of predictions. In the last plot, there are also not any influential outliers exist. Thus our model is good.
+Above plots are the diagonistic plots for the model. In the first plot, all of the points are nearly randomly distributed around the 0 line except there is a small pattern. However, that pattern is acceptable. The QQ plot shows the target variable is deviated fromm the normal distribution. That deviation is expected because the distribution of the $log(price)$ is not that normally distributed as shown in the EDA. For the scale-location plot, there is not an obvious pattern in the graph, which means the variance of the residual is constant across all level of predictions. In the last plot, there are also not any influential outliers exist. Thus our model is good. At this point, we successfully train a mdoel that can predict the Morphine price.
+
+## Limitation
+
+When we are exploring the models, there are actually several interactions that can improve the performance of the model. There are two primary reasons we did not include those interactions. First, the interpretability of model will decrease. For example, the interaction between the Bulk and Primary_reason. It is hard for us to explain how that relate to the price of the drug. Second, those interactions may lead the model to a overfitting problem.
 
 
 
